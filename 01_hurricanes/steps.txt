@@ -1,0 +1,8 @@
+1) Unzip data:
+
+> gzip -d master1.txt.gz
+
+2) Reformat into csv file using perl:
+
+> echo 'Storm ID,name,lat,lon,wspeed,pressure,year,hour,cat' > alldata.csv
+> cat master1.txt | perl -lpe 's/\s+/,/g; s/^,//; s/,$//; s/NOT,N/NOT N/; s/TROPICAL,/TROPICAL /;' >> alldata.csv
