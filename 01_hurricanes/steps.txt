@@ -1,4 +1,4 @@
-1) Unzip data:
+1) Read the entire assignment, retrieve data into a folder, and unzip data:
 
 > gzip -d master1.txt.gz
 
@@ -6,3 +6,91 @@
 
 > echo 'Storm ID,name,lat,lon,wspeed,pressure,year,hour,cat' > alldata.csv
 > cat master1.txt | perl -lpe 's/\s+/,/g; s/^,//; s/,$//; s/NOT,N/NOT N/; s/TROPICAL,/TROPICAL /;' >> alldata.csv
+
+3) Estimate total number of entries (including header line) (it's 23173):
+
+> wc -l alldata.csv
+
+4) Estiamte number of malformed data entries (it's 1493):
+
+> cat alldata.csv | perl -lne 'if($_ !~ m/([\w\s.\-]+,){8}[\w.\s\-]+/) { print; }' | wc -l
+
+5) Dump malformed data entries into new file for visual/manual inspection:
+
+> cat alldata.csv | perl -lne 'if($_ !~ m/([\w\s.\-]+,){8}[\w.\s\-]+/) { print; }' > malformeddata.csv
+
+They all lack category entry. Coincidentally, they also have zero for lat, lon, wspeed, and pressure columns.
+
+6) Check number of zeroed-out bad data entries of various kinds:
+
+Number with 0.0 for latitude and logitude (it's 1503):
+
+> cat alldata.csv | perl -lne 'if(m/([\w\s.\-]+,){2}0.0,0.0/) { print; }' | wc -l
+
+Number with 0.0 for latitude and logitude, and 0 windspeed (it's 1503):
+
+> cat alldata.csv | perl -lne 'if(m/([\w\s.\-]+,){2}0.0,0.0,0/) { print; }' | wc -l
+
+Number with 0.0 for latitude and logitude, 0 windspeed, and 0 central pressure (it's 1503):
+
+> cat alldata.csv | perl -lne 'if(m/([\w\s.\-]+,){2}0.0,0.0,0,0/) { print; }' | wc -l
+
+They are all the same entries. And some of them have category names, as 1503 > 1493.
+
+We can dump them into baddata.csv
+
+> cat alldata.csv | perl -lne 'if(m/([\w\s.\-]+,){2}0.0,0.0,0,0/) { print; }' > baddata.csv
+
+7) Count the number of bad data entries with category names (it's 10, obviously):
+
+> cat baddata.csv | perl -lne 'if(m/([\w\s.\-]+,){8}[\w.\s\-]+/) { print; }' | wc -l
+
+Print them:
+
+> cat baddata.csv | perl -lne 'if(m/([\w\s.\-]+,){8}[\w.\s\-]+/) { print; }'
+
+They all say "blank" for category. But they do have names, years, and hours.
+
+8) Check number of Storms with no names:
+
+In all data (it's 8152):
+
+> grep 'NOT NAMED' alldata.csv | wc -l
+
+In bad data (it's 455):
+
+> grep 'NOT NAMED' baddata.csv | wc -l
+
+Having no name is okay, sinc storm id is still unique.
+
+9) Create smaller test data files:
+
+Create testgooddata.csv using the following commands:
+
+> head -n 20 alldata.csv > testgooddata.csv
+> head -n 10028 alldata.csv | tail -n 20 >> testgooddata.csv
+> tail -n 20 alldata.csv >> testgooddata.csv
+
+Verify that data is good by matching number of lines to patterns:
+
+> wc -l testgooddata.csv
+> cat testgooddata.csv | perl -lne 'if(m/([\w\s.\-]+,){8}[\w.\s\-]+/) { print; }' | wc -l
+> cat testgooddata.csv | perl -lne 'if(m/([\w\s.\-]+,){2}0.0,0.0/) { print; }' | wc -l
+
+Create testmixeddata.csv using the following commands:
+
+> head -n 20 alldata.csv > testmixeddata.csv
+> head malformeddata.csv >> testmixeddata.csv
+> grep blank baddata.csv >> testmixeddata.csv
+> tail -n 20 alldata.csv >> testmixeddata.csv
+
+Verify, etc.
+
+> wc -l testmixeddata.csv
+> cat testmixeddata.csv | perl -lne 'if(m/([\w\s.\-]+,){8}[\w.\s\-]+/) { print; }' | wc -l
+> cat testmixeddata.csv | perl -lne 'if(m/blank/) { print; }' | wc -l
+> cat testmixeddata.csv | perl -lne 'if(m/([\w\s.\-]+,){2}0.0,0.0/) { print; }' | wc -l
+
+Note that the files alldata.csv, testgooddata.csv, and testmixeddata.csv have the first line as header.
+
+10) Now that we think we know the ways to tell good data lines from bad or malformed ones, create fortran subroutines that read data lines into arrays from csv files, and characterize the quality of data line using some integer array/variable. Use google-fu. Don't reinvent the wheel. But learn everything about what all the lines do. Vary and experiment. Don't just use libraries.
