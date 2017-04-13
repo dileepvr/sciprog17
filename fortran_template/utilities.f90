@@ -68,17 +68,30 @@ end function minof
 
 
 function minofint(a,b)
-  integer :: minof
+  integer :: minofint
   integer :: a, b
 
   if (a .gt. b) then
-     minof = b
+     minofint = b
   else
-     minof = a
+     minofint = a
   end if
   return
 
 end function minofint
+
+function maxofint(a,b)
+  integer :: maxofint
+  integer :: a, b
+
+  if (a .gt. b) then
+     maxofint = a
+  else
+     maxofint = b
+  end if
+  return
+
+end function maxofint
 
 !=======================================================================
 !
@@ -319,9 +332,10 @@ function numcols(buf,delim)
   character(*) :: buf, delim
 
   ! Local variables
-  integer :: pos = 1, buflen
+  integer :: pos, buflen
 
   numcols = 0
+  pos = 1
   
   do while ( index(buf(pos:),delim) .ne. 0 )
 

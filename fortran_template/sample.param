@@ -23,6 +23,7 @@ foobar := false
                  configuration data chunk, i.e. 0, 1 or 2)     
 data_file := true
 infilename := ../data/testgooddata.csv
+#infilename := ../data/alldata.csv
 inftype := 1
 data_delim := ,
 

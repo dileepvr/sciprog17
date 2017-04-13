@@ -20,6 +20,7 @@ program main
 
   !call printheaders(infilename, inftype)
   !write(*,*) numcols(",1,2, 3,  ",",")
+  call firstpass(infilename,data_delim,inftype,intarray,.true.)
   
   call allocarrays()
 

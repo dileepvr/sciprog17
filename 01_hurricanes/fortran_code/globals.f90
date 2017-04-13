@@ -24,6 +24,7 @@ module globals
   integer :: testint
 
   ! grids, arrays
+  integer, dimension(5) :: intarray
   real(wp), allocatable, dimension(:)   :: testrealarray
   integer, allocatable, dimension(:,:) :: testint2darray
 
