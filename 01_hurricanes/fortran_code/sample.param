@@ -12,7 +12,7 @@
 param_trace := false
 time_trace := false
 step_trace := false
-debug_trace := false
+debug_trace := true
 
 # General purpose logical flags
 foobar := false
@@ -20,11 +20,16 @@ foobar := false
 # data_file   -> whether to read particle positions from a file
 # infilename  -> input configuration file name
 # inftype     -> input file type (number of header lines above each
-                 configuration data chunk, i.e. 0, 1 or 2)     
+#                 configuration data chunk, i.e. 0, 1 or 2)
+# data_delim  -> Delimiter in data file (make sure it's not space
+# 	      	 or blank or tab, as this will be trimmed in code)
 data_file := true
-infilename := ../data/testgooddata.csv
-#infilename := ../data/alldata.csv
+#infilename := ../data/testgooddata.csv
+#infilename := ../data/baddata.csv
+infilename := ../data/alldata.csv
+#infilename := testdat.tmp
 inftype := 1
+#inftype := 0
 data_delim := ,
 
 #   testreal   -> test real param

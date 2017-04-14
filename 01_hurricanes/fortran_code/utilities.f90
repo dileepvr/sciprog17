@@ -350,6 +350,40 @@ function numcols(buf,delim)
 
 end function numcols
 
+
+!-----------------------------------------------------------------------
+!
+!  subroutines To_upper(str) and To_lower(str)
+!
+!  Converts case of string.
+!  Got this from: https://www.rosettacode.org/wiki/String_case#Fortran
+!
+!-----------------------------------------------------------------------
+
+subroutine To_upper(str)
+     character(*), intent(in out) :: str
+     integer :: i
+ 
+     do i = 1, len(str)
+       select case(str(i:i))
+         case("a":"z")
+           str(i:i) = achar(iachar(str(i:i))-32)
+       end select
+     end do 
+   end subroutine To_upper
+ 
+   subroutine To_lower(str)
+     character(*), intent(in out) :: str
+     integer :: i
+ 
+     do i = 1, len(str)
+       select case(str(i:i))
+         case("A":"Z")
+           str(i:i) = achar(iachar(str(i:i))+32)
+       end select
+     end do  
+   end subroutine To_Lower
+
 !=======================================================================
 !
 !  subroutine  get_real_param(p_file, p_name, param, trace)

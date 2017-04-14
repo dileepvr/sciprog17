@@ -23,8 +23,15 @@ module globals
   real(kind=wp) :: testreal
   integer :: testint
 
+  ! system variables
+  integer :: dnum, dcols, hcols, nscat, nid
+  integer, allocatable, dimension(:) :: id, wspeed, press, year, dirt, scatint
+  integer, allocatable, dimension(:) :: uid, idnum
+  real(wp), allocatable, dimension(:) :: lat, lon, hour
+  character(64), allocatable, dimension(:) :: colnames, uscat, scat, sname, usname
+
   ! grids, arrays
-  integer, dimension(5) :: intarray
+  integer, dimension(5) :: intarray ! \( numrows, maxcols, headercols, numrowswithmaxcols \)
   real(wp), allocatable, dimension(:)   :: testrealarray
   integer, allocatable, dimension(:,:) :: testint2darray
 
