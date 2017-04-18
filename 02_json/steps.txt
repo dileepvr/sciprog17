@@ -1,0 +1,27 @@
+1) Visit the url http://data.rcc-acis.org/StnMeta?county=41039 and save text to a file StnMeta01.txt
+
+2) Use perl in command line to generate elevation and station uid file:
+
+> echo 'uid, elevation' > ex2_elevations.csv
+> cat StnMeta01.txt | perl -ne 'while(<>){ if(m/uid": (.*), "ll.*"elev":(.*), "name/) { print "$1, $2\n"; } }' >> ex2_elevations.csv
+
+3) Use libreoffice --calc to generate required histogram:
+
+4) Generate one file (ex3_all.csv) with uid, elevation, and station names for conditions in exercise 3. Generate another file (ex3_uid.csv) with just the uids:
+
+> echo 'uid, elevation, station name' > ex3_all.csv
+> cat StnMeta01.txt | perl -ne 'while(<>){ if(m/uid": (.*), "ll.*"elev":(.*), "name": "(.*)"/) { my $uid = $1; my $elev = $2; my $name = $3; if ((($elev > 1000.0)&&($elev < 2500.0)) || ($name =~ m/EUGENE.*/) || ($name =~ m/FLORENCE.*/)) { print "$uid, $elev, $name\n"; } } }' >> ex3_all.csv 
+
+> echo 'uid' > ex3_uid.csv
+> cat ex3_all.csv | perl -ne 'while(<>){ m/(.*),.*,/; print "$1\n"; }' >> ex3_uid.csv
+
+5) Save the output of http://data.rcc-acis.org/StnData?uid=15218&sdate=2009-01-01&edate=2010-01-10&elems=1,2,4,10,11&output=csv to file ex4_raw_csv.csv and replace first line with column names:
+
+> cat ex4_raw_csv.csv | perl -lpe 's/EUGENE MAHLON SWEET AP/date, Tmax, Tmin, prec, snow, snow_d/' > ex4_processed.csv
+
+Replace "T" (meaning trace) with numeral 0.0001, and "M" (meaning missing data) with negative integer -1 for ease of processing:
+
+> sed -i 's/,T/,0.0001/g' ex4_processed.csv
+> sed -i 's/,M/,-1/g' ex4_processed.csv
+
+6) Start from the fortran_template in the parent directory to read ex4_processed.csv and generate the requested information.
