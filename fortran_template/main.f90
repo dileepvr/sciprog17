@@ -65,6 +65,28 @@ contains
     
   end subroutine dealloc
   
+!-----------------------------------------------------------------------
+!
+!  subroutine reloaddatafile()
+!
+!  Reloads data file. Takes care of array reallocations.
+!
+!-----------------------------------------------------------------------
+
+  subroutine reloaddatafile()
+    implicit none
+
+    call dealloc()
+
+    call firstpass(infilename,data_delim,inftype,intarray,.true.)
+    dnum = intarray(1); dcols = intarray(2);
+  
+    call allocarrays()
+
+    call readalldata(infilename,data_delim,inftype,intarray,debug_trace)
+    
+
+  end subroutine reloaddatafile
   
 
 !-----------------------------------------------------------------------

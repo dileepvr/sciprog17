@@ -22,6 +22,6 @@
 Replace "T" (meaning trace) with numeral 0.0001, and "M" (meaning missing data) with negative integer -1 for ease of processing:
 
 > sed -i 's/,T/,0.0001/g' ex4_processed.csv
-> sed -i 's/,M/,-1/g' ex4_processed.csv
+> sed -i 's/,M/,-1000/g' ex4_processed.csv
 
 6) Start from the fortran_template in the parent directory to read ex4_processed.csv and generate the requested information.

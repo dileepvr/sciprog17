@@ -12,7 +12,7 @@
 param_trace := false
 time_trace := false
 step_trace := false
-debug_trace := true
+debug_trace := false
 
 # General purpose logical flags
 foobar := false
