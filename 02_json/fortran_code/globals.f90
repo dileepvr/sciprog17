@@ -14,6 +14,8 @@ module globals
 !  integer, parameter :: wp = selected_real_kind(p=14)
   integer, parameter :: wp = selected_real_kind(p=8)
   real(wp), parameter :: pi = atan(1.0_wp)*4
+  real(wp), parameter :: ONE = 1.0_wp
+  real(wp), parameter :: NAN = TRANSFER(z'7FF0000000000001', ONE)
 
   ! control parameters
   logical :: param_trace, time_trace, step_trace, debug_trace

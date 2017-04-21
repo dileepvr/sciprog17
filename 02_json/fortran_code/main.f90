@@ -13,6 +13,7 @@ program main
   use timing
   use utilities
   use fileio
+  use netcdf
 
   implicit none
 
@@ -27,9 +28,11 @@ program main
 
   call readalldata(infilename,data_delim,inftype,intarray,debug_trace)
 
-  !  call exercise4()
+!  call exercise4()
 
-  call exercise5()
+!   call exercise5()
+
+  call exercise6()
 
   call dealloc()
 
@@ -124,14 +127,14 @@ contains
           maxprec = prec(ii); iimaxprec = ii;
        end if
 
-       if((prec(ii) .le. 0.0) .and. (snow(ii) .le. 0.0)) then ! Drought (no rain or snow)
+       if((prec(ii) .le. 0.0001) .and. (snow(ii) .le. 0.0001)) then ! Drought (no rain or snow)
           if(drought_flag) then
              dlen = dlen + 1;
           else
              dlen = 1; iidstart = ii; drought_flag = .true.;
           end if
        end if
-       if ((prec(ii) .gt. 0.0) .or. (snow(ii) .gt. 0.0) .or. (ii .eq. dnum)) then
+       if ((prec(ii) .gt. 0.0001) .or. (snow(ii) .gt. 0.0001) .or. (ii .eq. dnum)) then
           if(drought_flag) then
              drought_flag = .false.;
              if(dlen .ge. dlenmax) then
@@ -254,14 +257,14 @@ contains
        end if
 
        ! Finding three longest drought durations
-       if((prec(ii) .le. 0.0) .and. (snow(ii) .le. 0.0)) then ! Drought (no rain or snow)
+       if((prec(ii) .le. 0.0001) .and. (snow(ii) .le. 0.0001)) then ! Drought (no rain or snow)
           if(drought_flag) then
              dlen = dlen + 1;
           else
              dlen = 1; iidstart = ii; drought_flag = .true.;
           end if
        end if
-       if ((prec(ii) .gt. 0.0) .or. (snow(ii) .gt. 0.0) .or. (ii .eq. dnum)) then
+       if ((prec(ii) .gt. 0.0001) .or. (snow(ii) .gt. 0.0001) .or. (ii .eq. dnum)) then
           if(drought_flag) then
              drought_flag = .false.;
              if(dlen .ge. dlent) then
@@ -433,9 +436,216 @@ contains
 
     write(*,'(A23,A1,A1,I2,A1,I2)') 'Day of lowest rainfall:',char(9),char(9), &
          ymminw,'-',ydminw
+
+    return
     
   end subroutine exercise5
 
+
+!-----------------------------------------------------------------------
+!
+!  subroutine exercise6()
+!
+!  Do exercise 6 of assignment.
+!
+!-----------------------------------------------------------------------
+
+  subroutine exercise6()
+    implicit none
+
+    ! Local
+    integer :: ii, jj, kk, lrows, lcols, fid, status
+    real, dimension(68) :: wintersnow, latespringsnow
+    logical :: winter_check, latespring_check
+
+    real(wp), allocatable, dimension(:) :: lat, lon, oldlat, oldlon
+    real(wp), allocatable, dimension(:) :: maxtemp
+    real(wp), allocatable, dimension(:,:) :: tempout, tempout2
+    character(1024) :: tempbuf
+
+    ! netCDF stuff
+    integer :: ncid, latid, lonid, maxtempid
+    integer :: latdimid, londimid, dimids(2), dimids2(2)
+
+    
+    infilename = ""; infilename = "../data/ex6_processed.csv"
+    call reloaddatafile()
+
+    do jj = 1,68
+       wintersnow(jj) = 0.0; latespringsnow(jj) = 0.0;
+    end do
+
+    do ii = 1,dnum
+
+       ! Check if date is between April 1 and May 15
+       latespring_check = .false.;       
+       if((month(ii).eq.4).or.((month(ii).eq.5).and.(day(ii).le.15))) then
+          latespring_check = .true.
+       end if
+
+       ! Check if date is between November 1 and February 15 (winter)
+       winter_check = .false.;       
+       if((month(ii).ge.11).or.((month(ii).le.2).and.(day(ii).le.15))) then
+          winter_check = .true.
+       end if
+
+       if(latespring_check.and.(snow(ii).ge.0.0)) then
+          jj = year(ii)+1-1950;
+          latespringsnow(jj) = latespringsnow(jj) + snow(ii);
+       end if
+
+       if(winter_check.and.(snow(ii).ge.0.0)) then
+          jj = year(ii)+1-1950;
+          wintersnow(jj) = wintersnow(jj) + snow(ii);
+       end if
+       
+    end do
+
+!    write(123,*) 'year, winter_snow, latespring_snow'
+!    do jj = 1,68
+!       write(123,'(I4,A1,F5.2,A1,F5.2)') jj+1949,',',wintersnow(jj),',', &
+!            latespringsnow(jj)
+!    end do
+
+    infilename = ""; infilename = "../data/ex6_p2.csv"
+    call firstpass(infilename,data_delim,inftype,intarray,debug_trace)
+    lrows = intarray(1); lcols = intarray(2);
+
+    allocate(lat(lrows),lon(lrows),maxtemp(lrows),tempout(lrows,lrows))
+    allocate(oldlat(lrows),oldlon(lrows),tempout2(lrows,3))
+
+
+    ! Open file
+    status = 0
+    fid = getu()
+    open( UNIT=fid, FILE=infilename(1:indlnb(infilename)), STATUS='old', &
+         ERR=85, IOSTAT=status )
+
+    read(fid,'(A)') tempbuf ! read header line
+    do ii = 1,lrows ! read all lat, lon, maxtemp
+       read(fid,*) lat(ii), lon(ii), maxtemp(ii)
+       do jj = 1,lrows
+          tempout(ii,jj) = 0.0; ! NAN;
+       end do
+       !       tempout(ii,ii) = maxtemp(ii)
+       tempout2(ii,1) = lat(ii);
+       tempout2(ii,2) = lon(ii);
+       tempout2(ii,3) = maxtemp(ii);
+    end do
+
+
+    close(fid)
+    
+    oldlat = lat; oldlon = lon;
+
+    call sort(lat,lrows); call sort(lon,lrows);
+
+    do ii = 1,lrows
+       do jj = 1,lrows
+          if(oldlat(ii).eq.lat(jj)) exit
+       end do
+       do kk = 1,lrows
+          if(oldlon(ii).eq.lon(kk)) exit
+       end do
+       if(maxtemp(ii).ne.0.0) then
+          tempout(jj,kk) = maxtemp(ii);
+          tempout(maxofint(jj-1,1),kk) = tempout(jj,kk);
+          tempout(minofint(jj+1,lrows),kk) = tempout(jj,kk);
+          tempout(jj,maxofint(kk-1,1)) = tempout(jj,kk);
+          tempout(jj,minofint(kk+1,lrows)) = tempout(jj,kk);
+          tempout(maxofint(jj-2,1),kk) = tempout(jj,kk);
+          tempout(minofint(jj+2,lrows),kk) = tempout(jj,kk);
+          tempout(jj,maxofint(kk-2,1)) = tempout(jj,kk);
+          tempout(jj,minofint(kk+2,lrows)) = tempout(jj,kk);
+          tempout(maxofint(jj-1,1),maxofint(kk-1,1)) =tempout(jj,kk);
+          tempout(minofint(jj+1,lrows),minofint(kk+1,lrows)) = tempout(jj,kk);
+          tempout(maxofint(jj-1,1),maxofint(kk-1,1)) = tempout(jj,kk);
+          tempout(minofint(jj+1,lrows),minofint(kk+1,lrows)) = tempout(jj,kk);
+       end if
+    end do
+
+    do ii = 1,lrows
+       if(ii.gt.1) then
+          if(lat(ii).eq.lat(ii-1)) lat(ii) = lat(ii)+0.001
+          if(lon(ii).eq.lon(ii-1)) lon(ii) = lon(ii)+0.001          
+       end if
+    end do
+
+    ! Remove NANs
+!    if(.false.) then
+    do kk  = 1,1
+       do ii = 1,lrows
+          do jj = 1,lrows
+             if(tempout(ii,jj).eq.0.0) tempout(ii,jj) = NAN;
+          end do
+       end do
+    end do
+! end if
+ 
+    infilename = ""; infilename = "../plots/ex6_p2_netcdf.nc"
+    ! Create netCDF file.
+    call check(nf90_create(infilename,NF90_CLOBBER,ncid))
+    ! Define dimensions
+    call check(nf90_def_dim(ncid,"latitude",lrows,latdimid))
+    call check(nf90_def_dim(ncid,"longitude",lrows,londimid))
+    dimids = (/ latdimid, londimid /)
+    ! Define the variables
+    call check(nf90_def_var(ncid,"latitude",NF90_REAL,latdimid,latid))
+    call check(nf90_def_var(ncid,"longitude",NF90_REAL,londimid,lonid))
+    call check(nf90_def_var(ncid,"Tmax",NF90_REAL,dimids,maxtempid))
+    ! End define mode
+    call check(nf90_enddef(ncid))
+    ! Write data to file
+    call check(nf90_put_var(ncid, latid, lat))
+    call check(nf90_put_var(ncid, lonid, lon))
+    call check(nf90_put_var(ncid, maxtempid, tempout))
+    ! Close file
+    call check(nf90_close(ncid))
+
+!    infilename = ""; infilename = "../plots/ex6_p2_netcdf2.nc"
+    ! Create netCDF file.
+!    call check(nf90_create(infilename,NF90_CLOBBER,ncid))
+    ! Define dimensions
+!    call check(nf90_def_dim(ncid,"index",lrows,latdimid))
+!    call check(nf90_def_dim(ncid,"value",3,londimid))
+!    dimids2 = (/ latdimid, londimid /)
+    ! Define the variables
+!    call check(nf90_def_var(ncid,"Tmax",NF90_REAL,dimids2,maxtempid))
+    ! End define mode
+!    call check(nf90_enddef(ncid))
+    ! Write data to file
+!    call check(nf90_put_var(ncid, maxtempid, tempout2))
+    ! Close file
+!    call check(nf90_close(ncid))
+    
+    deallocate(lat,lon,maxtemp,tempout,oldlat,oldlon,tempout2)
+    
+    return
+
+85 continue
+    write(0,*)  'exercise(): Error while opening config file "', infilename,'", error: ', &
+         status
+   stop      
+    
+
+  end subroutine exercise6
+
+!-----------------------------------------------------------------------
+!
+!  subroutine check()
+!
+!  Required for netCDF stuff in exercise6()
+!
+!-----------------------------------------------------------------------
+  
+  subroutine check(status)
+    integer, intent ( in) :: status
+    
+    if(status /= nf90_noerr) then 
+      print *, trim(nf90_strerror(status))
+      stop "Stopped"
+    end if
+  end subroutine check  
   
 !-----------------------------------------------------------------------
 !
@@ -450,7 +660,7 @@ contains
 
     call dealloc()
 
-    call firstpass(infilename,data_delim,inftype,intarray,.true.)
+    call firstpass(infilename,data_delim,inftype,intarray,debug_trace)
     dnum = intarray(1); dcols = intarray(2);
   
     call allocarrays()

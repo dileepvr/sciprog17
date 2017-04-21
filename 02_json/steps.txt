@@ -25,3 +25,16 @@ Replace "T" (meaning trace) with numeral 0.0001, and "M" (meaning missing data) 
 > sed -i 's/,M/,-1000/g' ex4_processed.csv
 
 6) Start from the fortran_template in the parent directory to read ex4_processed.csv and generate the requested information.
+
+7) Learn netcdf-fortran bindings. The gfortran compile flags are -c -I/usr/include , and the libraries are linked with -L/usr/lib -lnetcdf -lnetcdff (see Makefile). Remember to include the line "use netcdf" in the preamble of the program.
+
+8) Get file from url http://data.rcc-acis.org/MultiStnData?state=OR,WA&date=2008-07-04&elems=maxt,mint and save as file ex6_p2.json. Generate ex6_p2.csv file with latitude, longitude, and maximum temperature only using this command:
+
+> echo 'latitude,longitude,Tmax' > ex6_p2.csv
+> cat ex6_p2.json | perl -ne 'while(<>) {if(m/ll": \[(.*),(.*)\], "sids.*"data":\["(.*)","/) { print "$1, $2, $3\n";}}' >> ex6_p2.csv
+
+Clean up the missing data:
+
+> sed -i 's/M/0/' ex6_p2.csv
+
+9) Use netcdf fortran bindings to generate the ex6_netcdf.nc file, and open in panoply.

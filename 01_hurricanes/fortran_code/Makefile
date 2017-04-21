@@ -1,4 +1,4 @@
-# Makefile to compile example program 'twodwave'
+# Makefile to compile
 
 F90 = gfortran
 F90FLAGS = -cpp -O3 -g -fbounds-check

@@ -13,6 +13,7 @@ program main
   use timing
   use utilities
   use fileio
+  use netcdf  
 
   implicit none
 
