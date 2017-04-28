@@ -160,17 +160,8 @@ module fileio
     ! Read all the data
     do ii = 1, dnum
 !    do ii = 1, 2    
-       tempbuf = ""
-       read(fid,'(A)') tempbuf
-       ! Read year, month, and day
-       pos = index(tempbuf,trim(delim))
-       read(tempbuf(1:pos-1),'(I4,A1,I2,A1,I2)') year(ii),tempchar1,month(ii),tempchar2 &
-            ,day(ii)
-       ! Read Tmax, Tmin, prec, snow, and snow_d
-       read(tempbuf(pos+1:),*) Tmax(ii),Tmin(ii),prec(ii),snow(ii),snow_d(ii)
-
-!       write(*,*) year(ii), month(ii), day(ii), Tmax(ii), prec(ii), snow(ii)
-       
+       ! Read longitude and latitude
+       read(fid,*) lon(ii), lat(ii)
     end do
 
 !    if(print_trace) then
@@ -190,7 +181,7 @@ module fileio
    stop      
 
   end subroutine readalldata
-    
+  
     
 !-----------------------------------------------------------------------
 !

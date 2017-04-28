@@ -1,0 +1,26 @@
+Steps:-
+
+1) First I download the file from Kahli's github repository. Then run the command:
+
+> wc -l mcdonalds.csv
+
+It spits out 14170 as the number of lines.
+
+2) I then used the highcharts scripts to plot a map, just to get an
+idea of locations. Judging by the latitude-longitude map, one can
+easily filter out the restaurants within the contiguous 48 states from
+those that aren't by using a longitudinal demarcation at, say, -130 degrees.
+
+One can therefore determine the number of stores in the 48 states with the command:
+
+> cat mcdonalds.csv | perl -ne 'while(<>){ if(m/(.*),(.*)/) { if ($1 > -130) {print "$_";} } }' | wc -l
+It splits out 14063.
+
+
+grid sizes for ex2
+
+   1.0000000000000000              500         247
+   2.0000000000000004              354         175
+   4.0000000000000000              250         124
+   8.0000000000000018              177          88
+   16.000000000000000              125          62

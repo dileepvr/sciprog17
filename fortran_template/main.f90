@@ -80,7 +80,6 @@ contains
     call dealloc()
 
     call firstpass(infilename,data_delim,inftype,intarray,.true.)
-    dnum = intarray(1); dcols = intarray(2);
   
     call allocarrays()
 

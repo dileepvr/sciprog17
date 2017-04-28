@@ -9,8 +9,10 @@ function updateplot() {
 	plottype = document.getElementById('plottype1').value;
     } else if(document.getElementById('plottype2').checked) {
 	plottype = document.getElementById('plottype2').value;
-    } else {
+    } else if(document.getElementById('plottype3').checked) {
 	plottype = document.getElementById('plottype3').value;
+    } else {
+	plottype = document.getElementById('plottype4').value;
     }
     
     var file = fileInput.files[0];
@@ -43,8 +45,8 @@ function makeplot(container, plottype, titletxt, subtxt, xaxistxt, yaxistxt, dat
 	subtitle: { text: subtxt },
 	yAxis: { title: { text: yaxistxt } },
 	xAxis: { title: { text: xaxistxt } },	
-	legend: { enable: 'true' , layout: 'vertical', align: 'right', verticalAlign: 'middle' },
-	data: {	csv: datacsv },
+	legend: { enable: 'false' , layout: 'vertical', align: 'right', verticalAlign: 'middle' },
+	data: { csv: datacsv },
 	tooltip: {
 	    formatter: function() {
 		var sliceIndex = this.point.index;
