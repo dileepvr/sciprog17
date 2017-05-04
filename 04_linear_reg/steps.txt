@@ -1,0 +1,18 @@
+Steps:-
+
+1) Convert data file to csv with comma as delimiter (and a header line):
+
+> echo 'x,y' > data.csv
+> cat data.txt | perl -ne 'while(<>){ m/(.+)\t(.+)/; print"$1,$2\n"; }' >> data.csv
+
+2) Estimate number of lines in global temperature data file (a2.txt):
+
+> wc -l a2.txt
+
+It's 144. We need to get rid of first four lines and last 3 lines.
+
+> echo 'year,ann_mean,5_yr_mean' > a2.csv
+> cat a2.txt | head -n 141 | tail -n 138 | perl -ne 'while(<>) {m/ (\S+)\s+(\S+)\s+(\S+)/; print "$1,$2,$3\n"; }' >> a2.csv
+> sed -i 's/*/-1000/g' a2.csv
+
+

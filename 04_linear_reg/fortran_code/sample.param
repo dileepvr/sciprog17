@@ -1,0 +1,42 @@
+# sample.param
+#
+# A sample parameter file
+#
+# use '#' at beginning of line for comments, just to be safe
+
+# Display modes
+# param_trace -> whether to print parameters to std err as they are read in
+# time_trace  -> whether to print elapsed time and status to std err
+# step_trace  -> whether to print iteration progress
+# debug_trace -> whether to print debug messages (used while testing)
+param_trace := false
+time_trace := false
+step_trace := false
+debug_trace := false
+
+# General purpose logical flags
+foobar := false
+
+# data_file   -> whether to read particle positions from a file
+# infilename  -> input configuration file name
+# inftype     -> input file type (number of header lines above each
+#                 configuration data chunk, i.e. 0, 1 or 2)
+# data_delim  -> Delimiter in data file (make sure it's not space
+# 	      	 or blank or tab, as this will be trimmed in code)
+data_file := true
+infilename := ../data/data.csv
+inftype := 1
+data_delim := ,
+
+#   testreal   -> test real param
+#   testint    -> test integer param
+testreal := 0.450
+testint := 10
+
+# output file stem
+#   if base_file_tag := sample, then outputs will be to file
+#   sample.dat, sample.xyz, etc
+base_file_tag := sample
+
+
+
