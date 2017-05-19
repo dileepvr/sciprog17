@@ -1,0 +1,11 @@
+Steps:-
+
+1) Download the files. Then replace all blank spaces with comma delimiters (whilst removing the first and last commas in every line) to generate csv files:
+
+> echo 'year,jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec,full' > cetMax.csv
+> cat cetMax.txt | perl -lpe 's/\s+/,/g; s/(^,|,$)//g;' >> cetMax.csv
+
+> echo 'year,jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec,full' > cetMin.csv
+> cat cetMin.txt | perl -lpe 's/\s+/,/g; s/(^,|,$)//g;' >> cetMin.csv
+
+2) 

@@ -31,6 +31,116 @@ subroutine initialize_module_utilities()
   write(0,*) trim(RCS_ID)
 end subroutine initialize_module_utilities
 
+
+! --------------------------------------------------------------------
+! subroutine exp_smooth(inarr,outarr,N,alpha):
+!    This function performs exponential smoothing.
+! inarr is input array data. Smoothed output is outarr.
+! N is number of data points, pad is padding.
+! alpha is smoothing factor.
+! --------------------------------------------------------------------
+
+subroutine exp_smooth(inarr,outarr,N,alpha)
+  implicit none
+
+  integer, intent(in) :: N
+  real(wp), intent(in) :: alpha
+  real(wp), intent(in) :: inarr(N)
+  real(wp), intent(out) :: outarr(N)
+
+  ! local
+  integer :: ii
+  real(wp) :: oneminusalpha
+
+  oneminusalpha = 1.0-alpha;
+  outarr(1) = inarr(1);
+  do ii = 2,N
+     outarr(ii) = alpha*inarr(ii)+oneminusalpha*outarr(ii-1);
+  end do
+  
+
+end subroutine exp_smooth
+
+
+! --------------------------------------------------------------------
+! subroutine gaus_smooth(inarr,outarr,N,pad,sig):
+!    This function performs gaussian kernel smoothing.
+! inarr is input array data. Smoothed output is outarr.
+! N is number of data points, pad is padding.
+! kernel width is 2*pad+1 .
+! Gaussian sigma is sig.
+! --------------------------------------------------------------------
+
+subroutine gaus_smooth(inarr,outarr,N,pad,sig)
+  implicit none
+
+  integer, intent(in) :: N, pad
+  real(wp), intent(in) :: sig
+  real(wp), intent(in) :: inarr(N)
+  real(wp), intent(out) :: outarr(N)
+
+  ! local
+  integer :: ii, jj
+  real(wp), dimension(2*pad+1) :: kern
+  real(wp) :: suminv, sigsq
+
+  suminv = 0.0; sigsq = sig*sig;
+  do ii = -pad,pad
+     kern(ii+pad+1) = exp(-1.0*(ii*ii)/sigsq);
+     suminv = suminv + kern(ii+pad+1);
+  end do
+
+  suminv = 1.0/suminv;
+  do ii = pad+1,N-pad
+     outarr(ii) = 0.0;
+     do jj = -pad,pad
+        outarr(ii) = outarr(ii) + inarr(ii+jj)*kern(jj+pad+1);
+     end do
+     outarr(ii) = outarr(ii)*suminv;
+  end do
+  
+
+end subroutine gaus_smooth
+
+
+
+! --------------------------------------------------------------------
+! subroutine box_smooth(inarr,outarr,N,pad):
+!    This function performs boxcar average smoothing.
+! inarr is input array data. Smoothed output is outarr.
+! N is number of data points, pad is padding.
+! boxcar width is 2*pad+1 .
+! --------------------------------------------------------------------
+
+subroutine box_smooth(inarr,outarr,N,pad)
+  implicit none
+
+  integer, intent(in) :: N, pad
+  real(wp), intent(in) :: inarr(N)
+  real(wp), intent(out) :: outarr(N)
+
+  ! local
+  integer :: ii, jj
+  real(wp) :: sum, widthinv
+
+  widthinv = 1.0/(2.0*pad+1.0);
+
+  do ii = pad+1,N-pad
+     if(ii .eq. pad+1) then
+        sum = 0.0;
+        do jj = -pad,pad
+           sum = sum + inarr(ii+jj);
+        end do
+     else
+        sum = sum - inarr(ii-pad-1) + inarr(ii+pad);
+     end if
+     outarr(ii) = sum*widthinv;
+  end do
+  
+
+end subroutine box_smooth
+
+
 ! --------------------------------------------------------------------
 ! subroutine linreg(x,y,err,wei,ski,N,params,res,ptrace):
 !    This function computes linear regression paramters.

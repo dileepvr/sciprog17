@@ -1,0 +1,7 @@
+Steps:-
+
+1) Get the data file:
+
+> wget http://homework.uoregon.edu/pub/class/sciprog17/rivers.csv
+
+2) 
