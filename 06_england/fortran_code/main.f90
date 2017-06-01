@@ -33,16 +33,98 @@ program main
 
   call readalldata(infilename,data_delim,inftype,intarray,debug_trace)
 
-  if(.false.) then
-     do ii = 1,dnum
-        do jj = 1,12
-           if(Temp(13,ii).lt.Temp(jj,ii)) Temp(13,ii) = Temp(jj,ii);
-        end do
-     end do
-  end if
+  call gaus_smooth(Temp(1,2:dnum),gausT(1,2:dnum),dnum-1,gauw2,gausig)
+  do jj = 2,4
+     call gaus_smooth(Temp(jj,:),gausT(jj,:),dnum,gauw2,gausig)
+  end do
 
-  ystart = 84; yend = 113; ! (1961-1990)
-  baseline = 0.0;
+  jj = 0;
+  do ii = 2,302 ! 1659-1960
+     if(Temp(1,ii).lt.2.3) jj = jj + 1;
+  end do
+  Tavg = 1.0*jj/30.0;
+
+  write(*,*) Tavg, exp(-1.5*Tavg)
+  
+  if(.false.) then
+  jj = 1; ! DJF season
+  Tavg = 0.0; Tavgold = 0.0; bestline = 100.0;
+  do ystart = 2,dnum-49 ! Skip first data row for this season
+     !     do yend = ystart+29,dnum
+     yend = ystart+49;
+     baseline = 0.0;
+     do ii = ystart,yend
+        baseline = baseline + Temp(jj,ii);
+     end do
+     baseline = baseline/(yend-ystart+1.0);
+     if(bestline.gt.baseline) then
+        ystartbest = ystart; yendbest = yend; bestline = baseline;
+     end if
+ !    end do
+  end do
+
+  write(*,*) 'Best DJF baseline period: ', ystartbest+1658,'-',yendbest+1658
+
+  do ii = 2,dnum
+     baseT(jj,ii) = Temp(jj,ii)-bestline;
+     gausT(jj,ii) = gausT(jj,ii) - bestline;
+  end do
+
+  write(122,*) 'year,DJF,gaussian(sig=7yr.)'
+  do ii = 2,dnum
+     if((ii.ge.(gauw2+2)).and.(ii.le.(dnum-gauw2))) then
+        write(122,*) year(ii), ',',baseT(jj,ii), ',',gausT(jj,ii)
+     else
+        write(122,*) year(ii), ',',baseT(jj,ii), ','
+     end if
+  end do
+
+  jj = 3; ! JJA season
+  Tavg = 0.0; Tavgold = 0.0; bestline = 100.0;
+  do ystart = 1,dnum-49
+     !     do yend = ystart+29,dnum
+     yend = ystart+49;
+     baseline = 0.0;
+     do ii = ystart,yend
+        baseline = baseline + Temp(jj,ii);
+     end do
+     baseline = baseline/(yend-ystart+1.0);
+     if(bestline.gt.baseline) then
+        ystartbest = ystart; yendbest = yend; bestline = baseline;
+     end if
+ !    end do
+  end do
+
+  write(*,*) 'Best JJA baseline period: ', ystartbest+1658,'-',yendbest+1658
+
+  do ii = 1,dnum
+     baseT(jj,ii) = Temp(jj,ii)-bestline;
+     gausT(jj,ii) = gausT(jj,ii) - bestline;
+  end do
+  
+
+  write(123,*) 'year,DJF,gaussian(sig=7yr.)'
+  do ii = 1,dnum
+     if((ii.ge.(gauw2+1)).and.(ii.le.(dnum-gauw2))) then
+        write(123,*) year(ii), ',',baseT(jj,ii), ',',gausT(jj,ii)
+     else
+        write(123,*) year(ii), ',',baseT(jj,ii), ','
+     end if
+  end do
+  end if
+  
+  if(.false.) then ! Exercise 5a stuff
+     
+     if(.false.) then
+        do ii = 1,dnum
+           do jj = 1,12
+              if(Temp(13,ii).lt.Temp(jj,ii)) Temp(13,ii) = Temp(jj,ii);
+           end do
+        end do
+     end if
+
+     ystart = 84; yend = 113; ! (1961-1990)
+     baseline = 0.0;
   do ii = ystart,yend
      baseline = baseline + Temp(13,ii);
   end do
@@ -150,7 +232,8 @@ program main
         write(jj,*) year(ii), ',',baseT(kk,ii), ',,,',expT(kk,ii)           
      end if
   end do
-  
+
+  end if ! Exercise 5a stuff
   
   call dealloc()
 

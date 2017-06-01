@@ -140,6 +140,7 @@ module fileio
     
   end subroutine printheaders
     
+
 !-----------------------------------------------------------------------
 !
 !  subroutine readalldata(fname,delim,numheaders,intarr,print_trace)
@@ -199,7 +200,7 @@ module fileio
     ! Read all the data
     do ii = 1, dnum
 !    do ii = 1, 2    
-       read(fid,*) xdat(ii), ydat(ii)
+       read(fid,*) year(ii), delD(ii)
     end do
 
     if(print_trace) then
@@ -219,88 +220,5 @@ module fileio
    stop      
 
   end subroutine readalldata
-
-
-!-----------------------------------------------------------------------
-!
-!  subroutine readalldata2(fname,delim,numheaders,intarr,print_trace)
-!
-!  Reads data file into arrays.
-!  Uses global variables.
-!
-!-----------------------------------------------------------------------
-
-  subroutine readalldata2(fname,delim,numheaders,intarr,print_trace)
-
-      implicit none
-
-    character(64), intent(in) :: fname
-    character(*), intent(in) :: delim
-    integer, intent(in) :: numheaders
-    integer, dimension(:), intent(out) :: intarr
-    logical, intent(in) :: print_trace
-
-    ! Local variables
-    integer :: ii, jj, fid, status, numrows, maxcols, headercols, pos
-    integer :: kk, oldpos, oldpos2
-    integer :: numrowswithmaxcols
-    character(1024) :: tempbuf
-    real(wp) :: tempdat
-
-    numrows = intarr(1); maxcols = intarr(2); headercols = intarr(3);
-
-    ! Open file
-    status = 0
-    fid = getu()
-    open( UNIT=fid, FILE=fname(1:indlnb(fname)), STATUS='old', &
-         ERR=98, IOSTAT=status )
-
-    if(numheaders .gt. 0) then
-       ! Read column names from header
-       do ii = 1,numheaders
-          tempbuf = ""
-          read(fid,'(A)') tempbuf
-          if(headercols .eq. numcols(trim(tempbuf),trim(delim))) then
-             jj = 1; pos = 1; 
-             do while ( index(tempbuf(pos:),trim(delim)) .ne. 0 )
-                oldpos = pos
-                pos = pos + index(tempbuf(pos:),trim(delim))
-                colnames(jj) = ""
-                colnames(jj) = tempbuf(oldpos:pos-2)
-                jj = jj + 1
-             end do
-
-             colnames(jj) = ""
-             colnames(jj) = tempbuf(pos:)
-             if(trim(tempbuf(pos:)) .eq. "") colnames(jj) = "unnamed"
-             exit
-          end if
-       end do
-    end if
-    
-    ! Read all the data
-    do ii = 1, dnum
-!    do ii = 1, 2    
-       read(fid,*) xdat(ii), ydat(ii), tempdat
-    end do
-
-    if(print_trace) then
-!    if(.false.) then
-       write(*,*) 'Column names are:'
-       do ii = 1,headercols
-          write(*,*) ii, ':', trim(colnames(ii))
-       end do
-    end if
-
-    close(fid)
-
-    return
-
-98 continue
-   write(0,*)  'readalldata2(): Error while opening config file "', fname,'", error: ', status
-   stop      
-
-  end subroutine readalldata2
-  
 
 end module fileio

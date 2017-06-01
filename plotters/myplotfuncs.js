@@ -43,8 +43,8 @@ function makeplot(container, plottype, titletxt, subtxt, xaxistxt, yaxistxt, dat
 	chart: { type: plottype },
 	title: { text: titletxt },
 	subtitle: { text: subtxt },
-	yAxis: { title: { text: yaxistxt } },
-	xAxis: { title: { text: xaxistxt } },	
+	yAxis: { title: { text: yaxistxt } }, 
+	xAxis: { title: { text: xaxistxt } },
 	legend: { enable: 'true' , layout: 'vertical', align: 'right', verticalAlign: 'middle' },
 	data: { csv: datacsv },
 /*	tooltip: {

@@ -24,9 +24,7 @@ foobar := false
 # data_delim  -> Delimiter in data file (make sure it's not space
 # 	      	 or blank or tab, as this will be trimmed in code)
 data_file := true
-#infilename := ../data/cetMax.csv
-#infilename := ../data/cetMin.csv
-infilename := ../data/ses.csv
+infilename := ../data/Dvstime.csv
 inftype := 1
 data_delim := ,
 

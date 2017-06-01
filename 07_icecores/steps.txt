@@ -1,0 +1,23 @@
+Steps:-
+
+1)
+
+> wget http://homework.uoregon.edu/pub/class/sciprog17/icecore.txt
+> wc -l icecore.txt
+
+# lines = 3311
+
+2)
+
+> echo 'depth,years,Deuterium,dT' > icecore.csv
+> cat icecore.txt | perl -lpe 's/\s+/,/g; s/,$//;' >> icecore.csv
+> cat icecore.csv | perl -lne 'm/\S+,(\S+),(\S+),\S+/; print "-$1,$2";' > Dvstime.csv
+
+3)
+
+          7  -59198.460830750206       -5232.4541294047594
+         11  -947578.24274199572       -20938.718786425452
+         15  -15161326.639979776       -83755.288092937088
+
+
+4) Periods: 105697, 38140, 28185
