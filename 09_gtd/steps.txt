@@ -1,0 +1,7 @@
+United States country ID = 217
+
+Number of lines = 156773 (including header line)
+
+Event number 200903300030 has too many delimiters in the location "text" blurb. Modify fortran code to handle quotes.
+
+
