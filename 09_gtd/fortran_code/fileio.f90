@@ -163,9 +163,11 @@ module fileio
     integer :: ii, jj, fid, status, numrows, maxcols, headercols, pos
     integer :: kk, oldpos, oldpos2
     integer :: numrowswithmaxcols
+    integer, dimension(dnum) :: ucountryid
+    character(64), dimension(dnum) :: ugrname, ucid, uaid, utid, uwid
+    logical :: oldcountry, oldgroup
     character(1024) :: tempbuf
-    character :: tempc1, tempc2, tempc3, tempc4
-    integer :: natypes, nttypes, nwtypes, ncountries
+    character(64) :: tbuf2
 
     numrows = intarr(1); maxcols = intarr(2); headercols = intarr(3);
 
@@ -200,6 +202,7 @@ module fileio
     
     ! Read all the data
     natypes = 0; nttypes = 0; nwtypes = 0; ncountries = 0;
+    ngroups = 0;
     do ii = 1, dnum
 !    do ii = 1, 6
        tempbuf = ""
@@ -213,9 +216,27 @@ module fileio
        pos = pos + index(tempbuf(pos+1:),trim(delim))
        oldpos = pos; pos = pos + index(tempbuf(pos+1:),trim(delim))
        read(tempbuf(oldpos+1:pos-1),*) country(ii)
-       if(ncountries.lt.country(ii)) ncountries = country(ii)
+       if(ii.eq.1) then
+          ncountries = 1; ucountryid(ii) = country(ii);
+          oldpos = pos; pos = pos + index(tempbuf(pos+1:),trim(delim))
+          ucid(ii) = tempbuf(oldpos+1:pos-1);          
+       else
+          oldcountry = .false.;
+          do jj = 1,ncountries
+             if(ucountryid(jj).eq.country(ii)) then
+                oldcountry = .true.; exit;
+             end if
+          end do
+          if(.not.oldcountry) then
+             ncountries = ncountries+1;
+             ucountryid(ncountries) = country(ii);
+             oldpos = pos; pos = pos + index(tempbuf(pos+1:),trim(delim))
+             ucid(ncountries) = tempbuf(oldpos+1:pos-1);
+          else
+             pos = pos + index(tempbuf(pos+1:),trim(delim))
+          end if
+       end if
        ! Read latitude and longitude
-       pos = pos + index(tempbuf(pos+1:),trim(delim))
        oldpos = pos; pos = pos + index(tempbuf(pos+1:),trim(delim))
        if(pos-oldpos.gt.1) then
           read(tempbuf(oldpos+1:pos-1),*) lat(ii);
@@ -233,17 +254,34 @@ module fileio
        oldpos = pos; pos = pos + index(tempbuf(pos+1:),trim(delim))
        read(tempbuf(oldpos+1:pos-1),*) atype(ii)
        if(natypes.lt.atype(ii)) natypes = atype(ii)
-       pos = pos + index(tempbuf(pos+1:),trim(delim))
+       oldpos = pos; pos = pos + index(tempbuf(pos+1:),trim(delim))
+       uaid(floor(atype(ii))) = tempbuf(oldpos+1:pos-1);
        oldpos = pos; pos = pos + index(tempbuf(pos+1:),trim(delim))
        read(tempbuf(oldpos+1:pos-1),*) tartype(ii)
        if(nttypes.lt.tartype(ii)) nttypes = tartype(ii)       
-       pos = pos + index(tempbuf(pos+1:),trim(delim))
        oldpos = pos; pos = pos + index(tempbuf(pos+1:),trim(delim))
-       gname(ii) = tempbuf(oldpos+1:pos-1)
+       utid(floor(tartype(ii))) = tempbuf(oldpos+1:pos-1);
+       oldpos = pos; pos = pos + index(tempbuf(pos+1:),trim(delim))
+       tbuf2 = tempbuf(oldpos+1:pos-1)
+       if(ii.eq.1) then
+          ngroups = 1; ugrname(ii) = tbuf2; gid(ii) = 1;
+       else
+          oldgroup = .false.;
+          do jj = 1,ngroups
+             if(ugrname(jj).eq.tbuf2) then
+                oldgroup = .true.; exit;
+             end if
+          end do
+          if(.not.oldgroup) then
+             ngroups = ngroups+1;
+             ugrname(ngroups) = tbuf2; gid(ii) = ngroups;
+          end if
+       end if
        oldpos = pos; pos = pos + index(tempbuf(pos+1:),trim(delim))
        read(tempbuf(oldpos+1:pos-1),*) wtype(ii)
        if(nwtypes.lt.wtype(ii)) nwtypes = wtype(ii)       
-       pos = pos + index(tempbuf(pos+1:),trim(delim))
+       oldpos = pos; pos = pos + index(tempbuf(pos+1:),trim(delim))
+       uwid(floor(wtype(ii))) = tempbuf(oldpos+1:pos-1);       
        oldpos = pos; pos = pos + index(tempbuf(pos+1:),trim(delim))
        if(pos-oldpos.gt.1) then
           read(tempbuf(oldpos+1:pos-1),*) nkill(ii);
@@ -255,11 +293,24 @@ module fileio
        else
           read(tempbuf(pos+1:),*) nwound(ii)
        end if
-!       write(*,*) atype(ii), tartype(ii), gname(ii), wtype(ii),nkill(ii),nwound(ii)
     end do
 
-    write(*,*) natypes, nttypes, nwtypes, ncountries
+!    write(*,*) natypes, nttypes, nwtypes, ncountries, ngroups
 
+    ! Allocate remaining global variables
+    allocate(gname(ngroups),aname(natypes),tname(nttypes))
+    allocate(wname(nwtypes),cname(ncountries))
+
+    cname(1:ncountries) = ucid(1:ncountries);
+    aname(1:natypes) = uaid(1:natypes);    
+    gname(1:ngroups) = ugrname(1:ngroups);
+    tname(1:nttypes) = utid(1:nttypes);
+    wname(1:nwtypes) = uwid(1:nwtypes);    
+
+    do ii = 1, ncountries
+       write(122,*) ii, ucountryid(ii), ucid(ii)
+    end do
+    
     if(print_trace) then
 !    if(.false.) then
        write(*,*) 'Column names are:'

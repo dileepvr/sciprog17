@@ -129,7 +129,7 @@ contains
   subroutine listuniquecat()
     implicit none
 
-    !Local
+    ! Local
     integer :: ii, jj
     logical :: old
     

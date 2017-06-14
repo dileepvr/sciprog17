@@ -31,6 +31,16 @@ subroutine initialize_module_utilities()
   write(0,*) trim(RCS_ID)
 end subroutine initialize_module_utilities
 
+
+function isalpha(c) result(s)
+  logical :: s
+  character*1 :: c
+  integer :: i
+  i=ichar(c)
+  s=(i.ge.65.and.i.le.90).or.(i.ge.97.and.i.le.122)
+  return
+end function isalpha
+
 ! --------------------------------------------------------------------
 ! subroutine linreg(x,y,err,wei,ski,N,params,res,ptrace):
 !    This function computes linear regression paramters.

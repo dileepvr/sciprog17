@@ -5,3 +5,268 @@ Number of lines = 156773 (including header line)
 Event number 200903300030 has too many delimiters in the location "text" blurb. Modify fortran code to handle quotes.
 
 
+Number of unique:
+
+attack types = 9
+target types = 22
+weapon types = 13
+countries = 206
+groups = 3290
+
+Attack types:-
+          1 Assassination
+          2 Armed Assault
+          3 Bombing/Explosion
+          4 Hijacking
+          5 Hostage Taking (Barricade Incident)
+          6 Hostage Taking (Kidnapping)
+          7 Facility/Infrastructure Attack
+          8 Unarmed Assault
+          9 Unknown 
+
+Target types:-
+           1 Business
+           2 Government (General)
+           3 Police
+           4 Military
+           5 Abortion Related
+           6 Airports & Aircraft
+           7 Government (Diplomatic)
+           8 Educational Institution
+           9 Food or Water Supply
+           10 Journalists & Media
+           11 Maritime
+           12 NGO
+           13 Other
+           14 Private Citizens & Property
+           15 Religious Figures/Institutions
+           16 Telecommunication
+           17 Terrorists/Non-State Militia
+           18 Tourists
+           19 Transportation
+           20 Unknown
+           21 Utilities
+           22 Violent Political Party
+
+Weapon types:-
+           1 Biological
+           2 Chemical
+           3 Radiological
+           4 
+           5 Firearms
+           6 Explosives/Bombs/Dynamite
+           7 Fake Weapons
+           8 Incendiary
+           9 Melee
+           10 Vehicle (not to include vehicle-borne explosives, i.e., car or t
+           11 Sabotage Equipment
+           12 Other
+           13 Unknown
+
+Countries:-
+           1          58 Dominican Republic
+           2         130 Mexico
+           3         160 Philippines
+           4          78 Greece
+           5         101 Japan
+           6         217 United States
+           7         218 Uruguay
+           8          98 Italy                                                           
+           9         499 East Germany (GDR)                                              
+          10          65 Ethiopia                                                        
+          11          83 Guatemala                                                       
+          12         222 Venezuela                                                       
+          13         362 West Germany (FRG)                                              
+          14         199 Switzerland                                                     
+          15         102 Jordan                                                          
+          16         185 Spain                                                           
+          17          30 Brazil                                                          
+          18          60 Egypt                                                           
+          19          11 Argentina                                                       
+          20         110 Lebanon                                                         
+          21          96 Ireland                                                         
+          22         209 Turkey                                                          
+          23         158 Paraguay                                                        
+          24          94 Iran                                                            
+          25         603 United Kingdom                                                  
+          26          45 Colombia                                                        
+          27          26 Bolivia                                                         
+          28         145 Nicaragua                                                       
+          29         142 Netherlands                                                     
+          30          21 Belgium                                                         
+          31          97 Israel                                                          
+          32          38 Canada                                                          
+          33          14 Australia                                                       
+          34         153 Pakistan                                                        
+          35         230 Zambia                                                          
+          36         198 Sweden                                                          
+          37          49 Costa Rica                                                      
+          38         406 South Yemen                                                     
+          39          36 Cambodia                                                        
+          40         201 Taiwan                                                          
+          41         156 Panama                                                          
+          42         106 Kuwait                                                          
+          43         155 West Bank and Gaza Strip                                        
+          44          15 Austria                                                         
+          45         236 Czechoslovakia                                                  
+          46          92 India                                                           
+          47          69 France                                                          
+          48         428 South Vietnam                                                   
+          49           6 Algeria                                                         
+          50          61 El Salvador                                                     
+          51         205 Thailand                                                        
+          52          87 Haiti                                                           
+          53         195 Sudan                                                           
+          54         136 Morocco                                                         
+          55          53 Cyprus                                                          
+          56         138 Myanmar                                                         
+          57           4 Afghanistan                                                     
+          58         159 Peru                                                            
+          59          43 Chile                                                           
+          60          88 Honduras                                                        
+          61         235 Yugoslavia                                                      
+          62          59 Ecuador                                                         
+          63         144 New Zealand                                                     
+          64         604 Zaire                                                           
+          65         162 Portugal                                                        
+          66         121 Malaysia                                                        
+          67         178 Singapore                                                       
+          68          29 Botswana                                                        
+          69         100 Jamaica                                                         
+          70          42 Chad                                                            
+          71         377 North Yemen                                                     
+          72           7 Andorra                                                         
+          73         200 Syria                                                           
+          74         184 South Korea                                                     
+          75         215 United Arab Emirates                                            
+          76         183 South Africa                                                    
+          77         104 Kenya                                                           
+          78          95 Iraq                                                            
+          79         182 Somalia                                                         
+          80         203 Tanzania                                                        
+          81         186 Sri Lanka                                                       
+          82         139 Namibia                                                         
+          83          17 Bahamas                                                         
+          84          20 Barbados                                                        
+          85         207 Trinidad and Tobago                                             
+          86          19 Bangladesh                                                      
+          87         605 People's Republic of the Congo                                  
+          88           8 Angola                                                          
+          89         128 Mauritania                                                      
+          90         173 Saudi Arabia                                                    
+          91          56 Djibouti                                                        
+          92          93 Indonesia                                                       
+          93         124 Malta                                                           
+          94         403 Rhodesia                                                        
+          95         359 Soviet Union                                                    
+          96          55 Denmark                                                         
+          97         349 Western Sahara                                                  
+          98          86 Guyana                                                          
+          99         137 Mozambique                                                      
+         100         208 Tunisia                                                         
+         101         213 Uganda                                                          
+         102         151 Norway                                                          
+         103         161 Poland                                                          
+         104         111 Lesotho                                                         
+         105          72 Gabon                                                           
+         106         113 Libya                                                           
+         107          18 Bahrain                                                         
+         108         147 Nigeria                                                         
+         109          89 Hong Kong                                                       
+         110         174 Senegal                                                         
+         111         231 Zimbabwe                                                        
+         112          84 Guinea                                                          
+         113          80 Grenada                                                         
+         114         532 New Hebrides                                                    
+         115          22 Belize                                                          
+         116          81 Guadeloupe                                                      
+         117         127 Martinique                                                      
+         118         221 Vatican City                                                    
+         119           5 Albania                                                         
+         120          41 Central African Republic                                        
+         121         176 Seychelles                                                      
+         122          57 Dominica                                                        
+         123         164 Qatar                                                           
+         124          32 Bulgaria                                                        
+         125         196 Suriname                                                        
+         126         197 Swaziland                                                       
+         127         116 Luxembourg                                                      
+         128          91 Iceland                                                         
+         129          70 French Guiana                                                   
+         130          66 Falkland Islands                                                
+         131          33 Burkina Faso                                                    
+         132         143 New Caledonia                                                   
+         133         166 Romania                                                         
+         134         146 Niger                                                           
+         135         141 Nepal                                                           
+         136         204 Togo                                                            
+         137          68 Finland                                                         
+         138          67 Fiji                                                            
+         139          76 Ghana                                                           
+         140          77 Gibraltar                                                       
+         141         129 Mauritius                                                       
+         142          90 Hungary                                                         
+         143         108 Laos                                                            
+         144         157 Papua New Guinea                                                
+         145          44 China                                                           
+         146         112 Liberia                                                         
+         147          47 Republic of the Congo                                           
+         148         123 Mali                                                            
+         149          75 Germany                                                         
+         150         228 Yemen                                                           
+         151         168 Rwanda                                                          
+         152         177 Sierra Leone                                                    
+         153          37 Cameroon                                                        
+         154          51 Cuba                                                            
+         155          50 Croatia                                                         
+         156          74 Georgia                                                         
+         157          16 Azerbaijan                                                      
+         158         119 Madagascar                                                      
+         159         115 Lithuania                                                       
+         160          34 Burundi                                                         
+         161         214 Ukraine                                                         
+         162         132 Moldova                                                         
+         163          12 Armenia                                                         
+         164         167 Russia                                                          
+         165          99 Ivory Coast                                                     
+         166         103 Kazakhstan                                                      
+         167          10 Antigua and Barbuda                                             
+         168          28 Bosnia-Herzegovina                                              
+         169          62 Equatorial Guinea                                               
+         170         202 Tajikistan                                                      
+         171         120 Malawi                                                          
+         172         219 Uzbekistan                                                      
+         173         109 Latvia                                                          
+         174          31 Brunei                                                          
+         175          64 Estonia                                                         
+         176         223 Vietnam                                                         
+         177          46 Comoros                                                         
+         178          23 Benin                                                           
+         179         179 Slovak Republic                                                 
+         180         118 Macedonia                                                       
+         181         226 Wallis and Futuna                                               
+         182          35 Belarus                                                         
+         183          54 Czech Republic                                                  
+         184         180 Slovenia                                                        
+         185          73 Gambia                                                          
+         186         149 North Korea                                                     
+         187          63 Eritrea                                                         
+         188         189 St. Kitts and Nevis                                             
+         189          71 French Polynesia                                                
+         190         117 Macau                                                           
+         191         107 Kyrgyzstan                                                      
+         192         220 Vanuatu                                                         
+         193         229 Democratic Republic of the Congo                                
+         194        1003 Kosovo                                                          
+         195         181 Solomon Islands                                                 
+         196         347 East Timor                                                      
+         197         190 St. Lucia                                                       
+         198          85 Guinea-Bissau                                                   
+         199        1002 Montenegro                                                      
+         200         422 International                                                   
+         201         210 Turkmenistan                                                    
+         202         175 Serbia-Montenegro                                               
+         203         122 Maldives                                                        
+         204          25 Bhutan                                                          
+         205        1001 Serbia                                                          
+         206        1004 South Sudan                                                   

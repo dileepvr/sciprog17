@@ -27,12 +27,15 @@ module globals
 
   ! system variables
   integer :: dnum, ncols
+  integer :: natypes, nttypes, nwtypes, ncountries, ngroups
   integer, allocatable, dimension(:) :: month, day, year, dayenum
-  real(wp), allocatable, dimension(:) :: atype, tartype, wtype, nkill, nwound
+  real(wp), allocatable, dimension(:) :: atype, tartype, wtype
+  real(wp), allocatable, dimension(:) :: nkill, nwound  
   integer, allocatable, dimension(:) :: country, gid
   integer*8, allocatable, dimension(:) :: eventid
   real(wp), allocatable, dimension(:) :: lat, lon
-  character(64), allocatable, dimension(:) :: colnames, gname
+  character(64), allocatable, dimension(:) :: colnames, gname, aname
+  character(64), allocatable, dimension(:) :: tname, wname, cname
   
   ! grids, arrays
   integer, dimension(5) :: intarray

@@ -5,7 +5,7 @@ F90FLAGS = -cpp -O3 -g -fbounds-check
 #F90FLAGS = -cpp -O3 -g -fopenmp
 
 F90CFLAGS = -c -I/usr/include
-F90LFLAGS = -L/usr/lib -lnetcdf -lnetcdff
+F90LFLAGS = -L/usr/lib
 
 F90_COMPILE  = $(F90) $(F90FLAGS) $(F90CFLAGS)
 F90_LOAD     = $(F90) $(F90FLAGS) $(F90LFLAGS)

@@ -13,7 +13,7 @@ program main
   use timing
   use utilities
   use fileio
-  use netcdf  
+!  use netcdf  
 
   implicit none
 
@@ -53,7 +53,7 @@ contains
     allocate(month(dnum),day(dnum),year(dnum),dayenum(dnum),country(dnum))
     allocate(atype(dnum),tartype(dnum),wtype(dnum),nkill(dnum),nwound(dnum))
     allocate(lat(dnum),lon(dnum),eventid(dnum))
-    allocate(colnames(ncols),gname(dnum),gid(dnum))
+    allocate(colnames(ncols),gid(dnum))
 
   end subroutine allocarrays
   
@@ -75,7 +75,9 @@ contains
     deallocate(month,day,year,dayenum,country)
     deallocate(atype,tartype,wtype,nkill,nwound)
     deallocate(lat,lon,eventid)
-    deallocate(colnames,gname,gid)
+    deallocate(colnames,gid)
+
+    deallocate(gname,aname,tname,wname,cname)
     
   end subroutine dealloc
   
