@@ -202,7 +202,7 @@ module fileio
     
     ! Read all the data
     natypes = 0; nttypes = 0; nwtypes = 0; ncountries = 0;
-    ngroups = 0;
+    ngroups = 0; kk = 1;
     do ii = 1, dnum
 !    do ii = 1, 6
        tempbuf = ""
@@ -281,7 +281,7 @@ module fileio
        read(tempbuf(oldpos+1:pos-1),*) wtype(ii)
        if(nwtypes.lt.wtype(ii)) nwtypes = wtype(ii)       
        oldpos = pos; pos = pos + index(tempbuf(pos+1:),trim(delim))
-       uwid(floor(wtype(ii))) = tempbuf(oldpos+1:pos-1);       
+       uwid(floor(wtype(ii))) = tempbuf(oldpos+1:pos-1);
        oldpos = pos; pos = pos + index(tempbuf(pos+1:),trim(delim))
        if(pos-oldpos.gt.1) then
           read(tempbuf(oldpos+1:pos-1),*) nkill(ii);
@@ -292,6 +292,11 @@ module fileio
           nwound(ii) = -1;
        else
           read(tempbuf(pos+1:),*) nwound(ii)
+       end if
+       ! Detect 9/11 event
+       if((day(ii).eq.11).and.(month(ii).eq.9).and.(year(ii).eq.2001) &
+            .and.(country(ii).eq.217)) then
+          ii911s(kk) = ii; kk = kk + 1;
        end if
     end do
 
@@ -307,10 +312,6 @@ module fileio
     tname(1:nttypes) = utid(1:nttypes);
     wname(1:nwtypes) = uwid(1:nwtypes);    
 
-    do ii = 1, ncountries
-       write(122,*) ii, ucountryid(ii), ucid(ii)
-    end do
-    
     if(print_trace) then
 !    if(.false.) then
        write(*,*) 'Column names are:'

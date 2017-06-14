@@ -13,6 +13,21 @@ weapon types = 13
 countries = 206
 groups = 3290
 
+Singular events in the US besides 9/11:
+
+1) 1995 Oklahoma City Bombing (Timothy McVeigh):
+199504190004;4;19;217;United States;35.472015;-97.520354;;3;Bombing/Explosion;2;Government (General);Unaffiliated Individual(s);6;Explosives/Bombs/Dynamite;168;650
+
+2) 1984 Rajneeshee bioterror attack:
+198409200009;9;20;217;United States;45.601555;-121.183434;;8;Unarmed Assault;1;Business;Rajneeshees;1;Biological;0;751
+
+3) 2013 Boston marathon bombings (nwound double count?):
+201304150001;4;15;217;United States;42.350265;-71.080976;The incident occurred on Boylston Street in the Back Bay area of the city.;3;Bombing/Explosion;14;Private Citizens & Property;Unaffiliated Individual(s);6;Explosives/Bombs/Dynamite;1;132
+ 201304150002;4;15;217;United States;42.350265;-71.080976;The incident occurred on Boylston Street in the Back Bay area of the city.;3;Bombing/Explosion;14;Private Citizens & Property;Unaffiliated Individual(s);6;Explosives/Bombs/Dynamite;2;132
+
+4) 2013 West Fertilizer Company explosion, Texas:
+201304170041;4;17;217;United States;31.816677;-97.087902;;7;Facility/Infrastructure Attack;1;Business;Unknown;8;Incendiary;15;151
+
 Attack types:-
           1 Assassination
           2 Armed Assault
@@ -270,3 +285,39 @@ Countries:-
          204          25 Bhutan                                                          
          205        1001 Serbia                                                          
          206        1004 South Sudan                                                   
+
+
+Middle-eastern countries:-
+          15         102 Jordan
+          18          60 Egypt
+          20         110 Lebanon
+          24          94 Iran
+          38         406 South Yemen
+          42         106 Kuwait
+          71         377 North Yemen
+          73         200 Syria
+          75         215 United Arab Emirates
+          57           4 Afghanistan
+          78          95 Iraq
+          90         173 Saudi Arabia
+         106         113 Libya                                                           
+         107          18 Bahrain                                                         
+         123         164 Qatar
+         150         228 Yemen
+
+	 157          16 Azerbaijan
+         163          12 Armenia
+         166         103 Kazakhstan
+         170         202 Tajikistan
+         172         219 Uzbekistan
+         191         107 Kyrgyzstan
+         201         210 Turkmenistan
+
+          22         209 Turkey
+
+          34         153 Pakistan
+
+          31          97 Israel
+          43         155 West Bank and Gaza Strip
+
+	  

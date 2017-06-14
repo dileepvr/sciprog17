@@ -27,6 +27,7 @@ module globals
 
   ! system variables
   integer :: dnum, ncols
+  integer, dimension(4) :: ii911s
   integer :: natypes, nttypes, nwtypes, ncountries, ngroups
   integer, allocatable, dimension(:) :: month, day, year, dayenum
   real(wp), allocatable, dimension(:) :: atype, tartype, wtype
