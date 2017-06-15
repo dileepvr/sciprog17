@@ -189,7 +189,7 @@ contains
     integer, dimension(nstrict) :: strictlist
     integer, dimension(nsoviet) :: sovietlist
     integer*8 :: nevUS, nevstrict, nevsoviet, nevedge1, nevedge2
-    integer :: ii, jj
+    integer :: ii, jj, kk
     real(wp) :: avg, avgUS, avgedge1, avgedge2, avgsoviet, avgstrict
     logical :: in
 
@@ -277,6 +277,53 @@ contains
        end if
     end do
     avgedge2 = avg;
+
+    ! Strict Middle-East
+    avg = nevstrict*1.0/(year(dnum)-year(1)+1)
+    write(*,*) 'Average events per year in strict Middle-East in 1970-2015: ', avg
+    write(*,*) 'Years in which strict Middle-East event rate was < 1% of average:'
+    nevstrict = 0; jj = year(1);
+    do ii = 1,dnum
+       in = .false.
+       do kk = 1,nstrict
+          if(country(ii).eq.strictlist(kk)) then
+             in = .true.; exit;
+          end if
+       end do
+       if(in) then
+          if(year(ii).eq.jj) then
+             nevstrict = nevstrict + 1;
+          else
+             if((1.0*nevstrict).le.0.01*avg) write(*,*) jj
+             jj = year(ii); nevstrict = 1;
+          end if
+       end if
+    end do
+    avgstrict = avg;
+
+    ! Soviet Middle-East
+    avg = nevsoviet*1.0/(year(dnum)-year(1)+1)
+    write(*,*) 'Average events per year in Ex-Soviet block in 1970-2015: ', avg
+    write(*,*) 'Years in which Ex-soviet block event rate was < 1% of average:'
+    nevsoviet = 0; jj = year(1);
+    do ii = 1,dnum
+       in = .false.
+       do kk = 1,nsoviet
+          if(country(ii).eq.sovietlist(kk)) then
+             in = .true.; exit;
+          end if
+       end do
+       if(in) then
+          if(year(ii).eq.jj) then
+             nevsoviet = nevsoviet + 1;
+          else
+             if((1.0*nevsoviet).le.0.01*avg) write(*,*) jj
+             jj = year(ii); nevsoviet = 1;
+          end if
+       end if
+    end do
+    avgsoviet = avg;
+    
     
   end subroutine exercise3
   
