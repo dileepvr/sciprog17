@@ -16,6 +16,8 @@ module globals
   real(wp), parameter :: pi = atan(1.0_wp)*4
   real(wp), parameter :: ONE = 1.0_wp
   real(wp), parameter :: NAN = TRANSFER(z'7FF0000000000001', ONE)
+  real(wp), parameter :: a_geo = 6378.137_wp ! kilometers, WGS84 earth ellipsoid param
+  real(wp), parameter :: e_geo = 0.0818192_wp ! WGS84 earth ellipticity
 
   ! control parameters
   logical :: param_trace, time_trace, step_trace, debug_trace
@@ -34,7 +36,8 @@ module globals
   real(wp), allocatable, dimension(:) :: nkill, nwound  
   integer, allocatable, dimension(:) :: country, gid
   integer*8, allocatable, dimension(:) :: eventid
-  real(wp), allocatable, dimension(:) :: lat, lon
+  real(wp), allocatable, dimension(:) :: lat, lon, lats, lons, invxy
+  real(wp), allocatable, dimension(:,:) :: rho_ll, rho_xy
   character(64), allocatable, dimension(:) :: colnames, gname, aname
   character(64), allocatable, dimension(:) :: tname, wname, cname
   
